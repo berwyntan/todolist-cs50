@@ -18,7 +18,8 @@ const addTodo = async (req, res) => {
     try {
         const result = await Todo.create({
             UserId: userId,
-            text: text
+            text: text,
+            done: false
         })
         return res.status(201).json(result)
     } catch (error) {
@@ -28,8 +29,8 @@ const addTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
     const { text, done } = req.body;
     const { id } = req.params;
-
-    if (!id || !text || !done) 
+    console.log(text, done, id)
+    if (!id || !text) 
         return res.status(400).json({ 'message': 'Todo id, status and todo are required.'});
     if (!validator.isLength(text, {max: 255})) 
         return res.status(400).json({ 'message': 'Todo cannot be more than 255 characters.'});

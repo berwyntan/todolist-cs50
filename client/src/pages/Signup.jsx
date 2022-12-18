@@ -2,6 +2,20 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+const apiSignup = async (data) => {
+  try {
+    const response = await axios.post("/api/user/signup", data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
+      }
+    )
+    return response
+  } catch (error) {
+    return response.error
+  }
+}
+
 const Signup = () => {
 
   const [error, setError] = useState("") 
@@ -10,6 +24,14 @@ const Signup = () => {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const onSubmit = (formData) => {
     console.log(formData)
+    apiSignup(formData)
+    .then((response) => {
+      console.log(response.data)
+      navigate("/")
+    })
+    .catch((error) => {
+      console.log(error)
+    })
     
   }
 

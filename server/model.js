@@ -37,7 +37,7 @@ const Todo = db.define('Todo', {
     },
     done: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      // defaultValue: false,
       allowNull: false
     },
 });

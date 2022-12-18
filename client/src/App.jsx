@@ -11,7 +11,7 @@ export const AppContext = createContext()
 
 function App() {
   
-  const [ authDetails, setAuthDetails ] = useState({email: ""})
+  const [ authDetails, setAuthDetails ] = useState({})
 
   const context = {
     authDetails,
