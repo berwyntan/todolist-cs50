@@ -1,6 +1,11 @@
-import { Navigate, Outlet } from "react-router-dom"
+import { Navigate, Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
-const Todolist = ({ authDetails }) => {
+const Todolist = () => {
+
+  const { authDetails } = useContext(AppContext) || {}
+
   return (
     <>
       {
@@ -8,7 +13,7 @@ const Todolist = ({ authDetails }) => {
         <Outlet /> :
         <Navigate to="/" />
       }
-      <div className="">Todos</div>
+      <div className="">Hello, {authDetails.name}</div>
     </>
   )
 }
