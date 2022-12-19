@@ -8,12 +8,13 @@ const Navbar = () => {
   const name = authDetails?.name
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 justify-start p-1">
         <Link to="/">
-            <div className="btn btn-ghost normal-case text-2xl">
+            <div className="btn btn-ghost normal-case text-xl sm:ml-10 md:ml-24">
               {name && `${name}'s`} ToDoList
             </div>
-        </Link>        
+        </Link>   
+        <div className="btn btn-ghost normal-case text-lg ml-10 sm:ml-24">Completed</div>     
     </div>
   )
 }
