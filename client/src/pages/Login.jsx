@@ -44,7 +44,7 @@ const Login = () => {
 
   return (
     <>
-      <div className='text-2xl'>Login</div>
+      <div className='text-2xl'>Login: ToDoList</div>
  
       <form onSubmit={handleSubmit(onSubmit)} className="form-control">
         <div className="flex flex-col items-center">

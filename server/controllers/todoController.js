@@ -67,7 +67,7 @@ const getTodosByUser = async (req, res) => {
     }
     try {
         const result = await Todo.findAll({where: {
-            UserId: id, done: false}, order: [['updatedAt', 'DESC']]
+            UserId: id, done: false}, order: [['updatedAt', 'ASC']]
         })
         return res.status(200).json(result)
     } catch (error) {
@@ -85,7 +85,7 @@ const getPrevTodosByUser = async (req, res) => {
     }
     try {
         const result = await Todo.findAll({where: {
-            UserId: id, done: true}, order: [['updatedAt', 'DESC']]
+            UserId: id, done: true}, order: [['updatedAt', 'ASC']]
         })
         return res.status(200).json(result)
     } catch (error) {

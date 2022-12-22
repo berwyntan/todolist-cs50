@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Todolist from './pages/Todolist'
 import Layout from './pages/Layout'
+import Completed from './pages/Completed'
 
 export const AppContext = createContext()
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/" element={<Login />}/>
             <Route path="/signup" element={<Signup />}/>
             <Route path="/todos" element={<Todolist />}/>
+            <Route path="/completed" element={<Completed />}/>
           </Route>
         </Routes>
       </BrowserRouter>

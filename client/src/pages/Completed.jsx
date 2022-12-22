@@ -2,11 +2,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import axios from "axios";
-import NewTodo from "../components/NewTodo";
 
-const apiGetTodos = async (id) => {
+const apiGetPrevTodos = async (id) => {
   try {
-    const response = await axios.get(`/api/todo/${id}`)
+    const response = await axios.get(`/api/todo/done/${id}`)
     return response
   } catch (error) {
     return response.error
@@ -27,17 +26,15 @@ const apiUpdateTodo = async (id, data) => {
   }
 }
 
-const Todolist = () => {
+const Completed = () => {
 
   const { authDetails } = useContext(AppContext) || {}
 
   const [ todos, setTodos ] = useState([])
   const [ change, setChange ] = useState(0)
 
-  const [ isAdding, setIsAdding ] = useState(false)
-
   useEffect(() => {
-    apiGetTodos(authDetails?.id)
+    apiGetPrevTodos(authDetails?.id)
     .then((response) => {
       console.log(response.data)
       if (response) {
@@ -83,7 +80,7 @@ const Todolist = () => {
   useEffect(() => {
 
     const getAllTodos = () => {
-      apiGetTodos(authDetails?.id)
+      apiGetPrevTodos(authDetails?.id)
       .then((response) => {
         console.log(response.data)
         if (response) {
@@ -128,20 +125,7 @@ const Todolist = () => {
         <Navigate to="/" />
       }
       
-      <div className="text-left font-semibold text-xl italic sm:ml-10 md:ml-28">{`${authDetails.name}'s`} ToDoList</div>
-      
-      <div className="flex items-start">
-        { 
-          isAdding ?
-          <div className="">
-            <NewTodo />
-          </div> :
-          <button className="btn sm:ml-10 md:ml-28" 
-            onClick={() => {setIsAdding(prev => !prev)}}>Add Todo</button>
-        }
-        
-      </div>      
-      
+      <div className="text-left font-semibold text-xl italic sm:ml-10 md:ml-28">{`${authDetails.name}'s`} Completed ToDos</div>
       <div className="flex flex-col max-w-md items-stretch align-center sm:ml-10 md:ml-24">
         {todoCards}
         {todos.length === 0 && <div className="">No todos</div>}
@@ -151,4 +135,4 @@ const Todolist = () => {
   )
 }
 
-export default Todolist
+export default Completed
