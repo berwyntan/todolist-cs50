@@ -52,7 +52,8 @@ const Todolist = () => {
       // console.log(update.text)
       apiUpdateTodo(update.id, {
         done: update.done,
-        text: update.text
+        text: update.text,
+        userId: update.UserId
       })
     }
 

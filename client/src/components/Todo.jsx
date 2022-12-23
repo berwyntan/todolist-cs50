@@ -5,14 +5,19 @@ const Todo = ({ toggleDone, todo, setChange }) => {
 
     const [ edit, setEdit ] = useState(false)
     const [ text, setText ] = useState(todo.text)
+    // console.log(todo.UserId)
 
     const submit = (e) => {
         e.preventDefault()
         // console.log(e.target[0].value)
         setEdit(prev => !prev)
+        if (e.target[0].value === todo.text) {
+            return
+        }
         const data = {
             text: e.target[0].value,
-            done: todo.done
+            done: todo.done,
+            userId: todo.UserId
         }
         // console.log(data)
         // console.log(todo.id)

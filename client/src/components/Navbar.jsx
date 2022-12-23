@@ -24,6 +24,7 @@ const Navbar = () => {
           </Link>   
         }        
         {name && <div className="ml-10 cursor-pointer" onClick={() => setAuthDetails({})}>Logout</div>}
+        {!name && <div className="btn btn-ghost normal-case text-lg ml-10 sm:ml-24">ToDo List</div>}
     </div>
   )
 }

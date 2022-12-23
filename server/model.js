@@ -40,10 +40,15 @@ const Todo = db.define('Todo', {
       // defaultValue: false,
       allowNull: false
     },
+    order: {
+      type: DataTypes.INTEGER,
+      // defaultValue: false,
+      // allowNull: false
+    },
 });
 
 User.hasMany(Todo);
 Todo.belongsTo(User);
-Todo.sync();
+Todo.sync({alter: true});
 
 module.exports = { User, Todo }
