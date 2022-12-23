@@ -117,7 +117,7 @@ const Completed = () => {
       <div className="text-left font-semibold text-xl italic my-2 sm:ml-10 md:ml-28">{`${authDetails.name}'s`} Completed ToDos
       </div>
       <div className="flex items-start">
-      <button className="btn sm:ml-10 md:ml-28 my-2" 
+      <button className="btn btn-secondary sm:ml-10 md:ml-28 my-2" 
               onClick={() => {deletePrevTodos(authDetails.id)}}>Clear All</button>
       </div>
       

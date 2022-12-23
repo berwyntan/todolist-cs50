@@ -113,7 +113,7 @@ const Todolist = () => {
               setChange={setChange}
             />
           </div> :
-          <button className="btn sm:ml-10 md:ml-28 my-2" 
+          <button className="btn btn-secondary sm:ml-10 md:ml-28 my-2" 
             onClick={() => {setIsAdding(prev => !prev)}}>Add Todo</button>
         }
         

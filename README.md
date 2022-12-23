@@ -3,7 +3,7 @@
 ### Video Demo
 
 ### About
-This is my final project for CS50x 2022. It is a todo list app, built with PERN stack.
+This is my final project for CS50x 2022. It is a todo list app, built with PERN stack. The idea for this app came from using Reminders app on iOS. It felt good to complete tasks and watch them disappear from your list, but it would be great to be able to reuse completed tasks so you didn't have to type it again. This also lets you practice atomic habits by making it easy to add back your habit to the list.
 
 ### Frontend
 The frontend is built using React.
@@ -18,6 +18,9 @@ The frontend is built using React.
 
 ##### Validation
 Login and signup come with validation. Invalid email will be rejected. Passwords must have at least 5 characters that are alphanumeric. When signing up, password must be entered twice and be the same. React Hook Form handles the validation and then makes a request to the backend on submission.
+
+##### Responsive design
+Works for both mobile and desktop. Comes with light and dark mode based on system preferences.
 
 ##### User interface
 The user will have a list on items to do ("ToDos") and a list of completed items ("Done"). Uncompleted todos can be checked off and sent to "Done." If you need to repeat that todo, you can go to "Done", click the checkbox and the todo will go back to "ToDos".

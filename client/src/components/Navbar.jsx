@@ -8,7 +8,7 @@ const Navbar = () => {
   const name = authDetails?.name
 
   return (
-    <div className="navbar bg-base-100 justify-start p-1 border-4">
+    <div className="navbar bg-base-100 justify-start p-1 border-b-2">
         {
           name &&
           <Link to="/todos">

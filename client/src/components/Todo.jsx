@@ -35,7 +35,7 @@ const Todo = ({ toggleDone, todo, setChange }) => {
 
     return (
         <>
-        <div className="card bg-base-200 shadow-xl px-4 py-1 my-1 max-w-md flex flex-row justify-between items-center">
+        <div className="card bg-base-200 shadow-xl px-4 py-1 my-1 max-w-md flex flex-row justify-between items-center dark:bg-slate-800">
             <div className="">
             
             {
