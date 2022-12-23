@@ -2,30 +2,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import axios from "axios";
+import { apiGetTodos, apiUpdateTodo } from "../api/todos";
 import NewTodo from "../components/NewTodo";
+import Todo from "../components/Todo";
 
-const apiGetTodos = async (id) => {
-  try {
-    const response = await axios.get(`/api/todo/${id}`)
-    return response
-  } catch (error) {
-    return response.error
-  }
-}
-
-const apiUpdateTodo = async (id, data) => {
-  try {
-    const response = await axios.post(`/api/todo/${id}`, data,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: true
-      }
-    )
-    return response
-  } catch (error) {
-    return response.error
-  }
-}
 
 const Todolist = () => {
 
@@ -35,11 +15,12 @@ const Todolist = () => {
   const [ change, setChange ] = useState(0)
 
   const [ isAdding, setIsAdding ] = useState(false)
-
+  const [ isLoading, setIsLoading ] = useState(false)
+  
   useEffect(() => {
     apiGetTodos(authDetails?.id)
     .then((response) => {
-      console.log(response.data)
+      // console.log(response.data)
       if (response) {
         setTodos(response.data)
       }   
@@ -66,9 +47,9 @@ const Todolist = () => {
     })
 
     const updateServer = async () => {
-      console.log(update.id)
-      console.log(update.done)
-      console.log(update.text)
+      // console.log(update.id)
+      // console.log(update.done)
+      // console.log(update.text)
       apiUpdateTodo(update.id, {
         done: update.done,
         text: update.text
@@ -83,9 +64,10 @@ const Todolist = () => {
   useEffect(() => {
 
     const getAllTodos = () => {
+      setIsLoading(true)
       apiGetTodos(authDetails?.id)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         if (response) {
           setTodos(response.data)
         }   
@@ -93,6 +75,7 @@ const Todolist = () => {
       .catch((error) => {
         console.log(error)
       })
+      setIsLoading(false)
     }
 
     const delay = setTimeout(getAllTodos, 1000)
@@ -104,19 +87,8 @@ const Todolist = () => {
   const todoCards = todos.map((todo) => {
     
     return (
-      <>
-        <div className="card bg-base-200 shadow-xl px-4 py-1 my-1 max-w-md flex flex-row justify-between items-center">
-          <div className="text-xl flex flex-start justify-items-start">{todo.text}</div>
-          <div className="flex items-end right-0">
-            <label className="label cursor-pointer justify-items-end">
-              {/* <span className="label-text text-xl">{todo.text}</span>  */}
-              <input type="checkbox" checked={todo.done} className="checkbox checkbox-primary"
-                onChange={() => toggleDone(todo.id, todo.done)}
-              />
-            </label>
-          </div>          
-        </div>
-      </>
+      
+      <Todo toggleDone={toggleDone} todo={todo} setChange={setChange} key={todo.id}/>
     )
   })
 
@@ -128,19 +100,25 @@ const Todolist = () => {
         <Navigate to="/" />
       }
       
-      <div className="text-left font-semibold text-xl italic sm:ml-10 md:ml-28">{`${authDetails.name}'s`} ToDoList</div>
+      <div className="text-left font-semibold text-xl italic sm:ml-10 md:ml-28 my-2">{`${authDetails.name}'s`} ToDoList</div>
       
       <div className="flex items-start">
         { 
           isAdding ?
-          <div className="">
-            <NewTodo />
+          <div className="my-2">
+            <NewTodo 
+              userId={authDetails.id}
+              setIsAdding={setIsAdding}
+              setChange={setChange}
+            />
           </div> :
-          <button className="btn sm:ml-10 md:ml-28" 
+          <button className="btn sm:ml-10 md:ml-28 my-2" 
             onClick={() => {setIsAdding(prev => !prev)}}>Add Todo</button>
         }
         
-      </div>      
+      </div>  
+
+      {isLoading && <div className="">Updating...</div>}    
       
       <div className="flex flex-col max-w-md items-stretch align-center sm:ml-10 md:ml-24">
         {todoCards}

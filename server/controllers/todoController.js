@@ -93,4 +93,22 @@ const getPrevTodosByUser = async (req, res) => {
     }
 }
 
-module.exports = { addTodo, getTodosByUser, updateTodo, getPrevTodosByUser }
+const deletePrevTodosByUser = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const userExists = await User.findByPk(id);
+        if (!userExists) return res.status(401).json({ 'message': 'User not found.'});
+    } catch (error) {
+        return res.status(400).json({ 'message': error.message });
+    }
+    try {
+        const result = await Todo.destroy({where: {
+            UserId: id, done: true}
+        })
+        return res.status(200).json(result)
+    } catch (error) {
+        return res.status(500).json({ 'message': error.message });
+    }
+}
+
+module.exports = { addTodo, getTodosByUser, updateTodo, getPrevTodosByUser, deletePrevTodosByUser }

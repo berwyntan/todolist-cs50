@@ -1,30 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
-import axios from "axios";
-
-const apiGetPrevTodos = async (id) => {
-  try {
-    const response = await axios.get(`/api/todo/done/${id}`)
-    return response
-  } catch (error) {
-    return response.error
-  }
-}
-
-const apiUpdateTodo = async (id, data) => {
-  try {
-    const response = await axios.post(`/api/todo/${id}`, data,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: true
-      }
-    )
-    return response
-  } catch (error) {
-    return response.error
-  }
-}
+import { apiGetPrevTodos, apiUpdateTodo, apiDeletePrevTodos } from "../api/todos";
+import Todo from "../components/Todo";
 
 const Completed = () => {
 
@@ -33,10 +11,13 @@ const Completed = () => {
   const [ todos, setTodos ] = useState([])
   const [ change, setChange ] = useState(0)
 
+  const [ isLoading, setIsLoading ] = useState(false)
+
   useEffect(() => {
+    setIsLoading(true)
     apiGetPrevTodos(authDetails?.id)
     .then((response) => {
-      console.log(response.data)
+      // console.log(response.data)
       if (response) {
         setTodos(response.data)
       }   
@@ -44,6 +25,7 @@ const Completed = () => {
     .catch((error) => {
       console.log(error)
     })
+    setIsLoading(false)
   }, [])
 
   const toggleDone = (id, done) => {
@@ -63,9 +45,9 @@ const Completed = () => {
     })
 
     const updateServer = async () => {
-      console.log(update.id)
-      console.log(update.done)
-      console.log(update.text)
+      // console.log(update.id)
+      // console.log(update.done)
+      // console.log(update.text)
       apiUpdateTodo(update.id, {
         done: update.done,
         text: update.text
@@ -80,9 +62,10 @@ const Completed = () => {
   useEffect(() => {
 
     const getAllTodos = () => {
+      setIsLoading(true)
       apiGetPrevTodos(authDetails?.id)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         if (response) {
           setTodos(response.data)
         }   
@@ -90,6 +73,7 @@ const Completed = () => {
       .catch((error) => {
         console.log(error)
       })
+      setIsLoading(false)
     }
 
     const delay = setTimeout(getAllTodos, 1000)
@@ -98,22 +82,26 @@ const Completed = () => {
     
   }, [change])
 
+  const deletePrevTodos = (id) => {
+    setIsLoading(true)
+    apiDeletePrevTodos(id)
+    .then((response) => {
+      // console.log(response.data)
+      if (response) {
+        setChange(prev => prev + 1)
+      }   
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    setIsLoading(false)
+  }
+
   const todoCards = todos.map((todo) => {
     
     return (
-      <>
-        <div className="card bg-base-200 shadow-xl px-4 py-1 my-1 max-w-md flex flex-row justify-between items-center">
-          <div className="text-xl flex flex-start justify-items-start">{todo.text}</div>
-          <div className="flex items-end right-0">
-            <label className="label cursor-pointer justify-items-end">
-              {/* <span className="label-text text-xl">{todo.text}</span>  */}
-              <input type="checkbox" checked={todo.done} className="checkbox checkbox-primary"
-                onChange={() => toggleDone(todo.id, todo.done)}
-              />
-            </label>
-          </div>          
-        </div>
-      </>
+      
+      <Todo toggleDone={toggleDone} todo={todo} setChange={setChange} key={todo.id}/>
     )
   })
 
@@ -125,7 +113,15 @@ const Completed = () => {
         <Navigate to="/" />
       }
       
-      <div className="text-left font-semibold text-xl italic sm:ml-10 md:ml-28">{`${authDetails.name}'s`} Completed ToDos</div>
+      <div className="text-left font-semibold text-xl italic my-2 sm:ml-10 md:ml-28">{`${authDetails.name}'s`} Completed ToDos
+      </div>
+      <div className="flex items-start">
+      <button className="btn sm:ml-10 md:ml-28 my-2" 
+              onClick={() => {deletePrevTodos(authDetails.id)}}>Clear All</button>
+      </div>
+      
+      {isLoading && <div className="">Updating...</div>}
+
       <div className="flex flex-col max-w-md items-stretch align-center sm:ml-10 md:ml-24">
         {todoCards}
         {todos.length === 0 && <div className="">No todos</div>}

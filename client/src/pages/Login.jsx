@@ -1,22 +1,9 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { apiLogin } from "../api/user";
 import { AppContext } from "../App";
 
-const apiLogin = async (data) => {
-  try {
-    const response = await axios.post("/api/user/login", data,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: true
-      }
-    )
-    return response
-  } catch (error) {
-    return response.error
-  }
-}
 
 const Login = () => {
   const [error, setError] = useState("") 
@@ -31,7 +18,7 @@ const Login = () => {
 
     apiLogin(formData)
     .then((response) => {
-      console.log(response.data)
+      // console.log(response.data)
       setAuthDetails(response.data)
       navigate("/todos")
     })

@@ -4,7 +4,7 @@ import { AppContext } from "../App";
 
 const Navbar = () => {
 
-  const { authDetails } = useContext(AppContext) || {}
+  const { authDetails, setAuthDetails } = useContext(AppContext) || {}
   const name = authDetails?.name
 
   return (
@@ -23,7 +23,7 @@ const Navbar = () => {
             <div className="btn btn-ghost normal-case text-lg ml-10 sm:ml-24">Done</div>  
           </Link>   
         }        
-        {name && <div className="ml-10">Logout</div>}
+        {name && <div className="ml-10 cursor-pointer" onClick={() => setAuthDetails({})}>Logout</div>}
     </div>
   )
 }

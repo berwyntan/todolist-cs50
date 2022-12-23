@@ -1,25 +1,14 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { apiSignup } from "../api/user";
 
-const apiSignup = async (data) => {
-  try {
-    const response = await axios.post("/api/user/signup", data,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: true
-      }
-    )
-    return response
-  } catch (error) {
-    return response.error
-  }
-}
 
 const Signup = () => {
 
   const [error, setError] = useState("") 
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
   const { register, handleSubmit, formState: { errors } } = useForm()
   const onSubmit = (formData) => {
