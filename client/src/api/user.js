@@ -8,9 +8,11 @@ export const apiLogin = async (data) => {
           withCredentials: true
         }
       )
+      // console.log(response)
       return response
     } catch (error) {
-      return response.error
+      
+      return error.response
     }
   }
 

@@ -18,9 +18,11 @@ const Login = () => {
 
     apiLogin(formData)
     .then((response) => {
-      // console.log(response.data)
-      setAuthDetails(response.data)
-      navigate("/todos")
+      // console.log(response)
+      if (response.status === 200) {
+        setAuthDetails(response.data)
+        navigate("/todos")
+      } else setError(response.data.message)
     })
     .catch((error) => {
       console.log(error)
@@ -39,7 +41,7 @@ const Login = () => {
         <label className="input-group flex flex-col items-center my-3">
         
         <input placeholder="Email" {...register("email", { 
-          required: true, onChange: () => setError("") })} 
+          required: true, pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, onChange: () => setError("") })} 
           className="input input-bordered w-full max-w-xs"/>
         </label>
 
@@ -54,6 +56,7 @@ const Login = () => {
 
         <div className="my-4">
           {errors.email?.type === 'required' && <span>Email is required</span>}
+          {errors.email?.type === 'pattern' && <span>Email is not valid</span>}
 
           {Boolean(errors.email) || errors.password?.type === 'required' && <span>Password is required</span>}
           
