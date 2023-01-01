@@ -18,6 +18,7 @@ const Todolist = () => {
   const [ isLoading, setIsLoading ] = useState(false)
   
   useEffect(() => {
+    setIsLoading(true)
     apiGetTodos(authDetails?.id)
     .then((response) => {
       // console.log(response.data)
@@ -28,6 +29,7 @@ const Todolist = () => {
     .catch((error) => {
       console.log(error)
     })
+    setIsLoading(false)
   }, [])
 
   const toggleDone = (id, done) => {
