@@ -3,7 +3,7 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const db = require("./config/database");
 
 const userRouter = require("./routes/userRouter");
@@ -20,7 +20,7 @@ try {
 console.error('Unable to connect to the database:', error);
 }
 
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors(corsOptions));
 
