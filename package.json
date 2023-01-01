@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "turbo": "^1.6.3"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "cd apps/server && npm run start"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
