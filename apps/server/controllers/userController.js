@@ -1,6 +1,7 @@
 const { User } = require('../model');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 
 const signup = async (req, res) => {
     const { email, name, password } = req.body;
@@ -55,10 +56,30 @@ const login = async (req, res) => {
     const match = await bcrypt.compare(password, foundUser.password)
     if(match) {
         try {
+
+            // create JWTs
+            const accessToken = jwt.sign(
+                { "email": foundUser.email, },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: '1h' }
+            );
+            const refreshToken = jwt.sign(
+                { "email": foundUser.email, },
+                process.env.REFRESH_TOKEN_SECRET,
+                { expiresIn: '2d' }
+            );
+
+            // Saving refreshToken with founduser
+            foundUser.refreshToken = refreshToken;
+            await foundUser.save();
+
+            res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 2 * 24 * 60 * 60 * 1000 });
+
             const authDetails = {
                 name: foundUser.name,
                 email: foundUser.email,
-                id: foundUser.id
+                id: foundUser.id,
+                accessToken: accessToken
             }
             res.status(200).json(authDetails);
         } catch (err) {

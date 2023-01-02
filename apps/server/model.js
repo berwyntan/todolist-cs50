@@ -20,9 +20,12 @@ const User = db.define('User', {
       type: DataTypes.STRING,
       allowNull: false
     },
+    refreshToken: {
+      type: DataTypes.STRING,
+    },
 });
 
-User.sync();
+User.sync({alter: true});
 
 const Todo = db.define('Todo', {
   

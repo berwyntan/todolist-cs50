@@ -5,6 +5,8 @@ const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 // const morgan = require("morgan");
 const db = require("./config/database");
+const cookieParser = require('cookie-parser');
+const verifyJWT = require('./middleware/verifyJWT');
 
 const userRouter = require("./routes/userRouter");
 const todoRouter = require("./routes/todoRouter");
@@ -28,6 +30,7 @@ app.use(express.static("../client/dist"))
 
 app.use("/api/user", userRouter);
 app.use("/api/todo", todoRouter);
+app.use(verifyJWT);
 
 app.get("/*", (req, res) => {
     res.sendFile(path.resolve("../client/dist/index.html"));
