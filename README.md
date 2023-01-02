@@ -44,12 +44,16 @@ The backend is running on Node and Express. The API functions are modularized to
 - Dotenv
 - Sequelize
 - Validator
+- JSONwebtoken
 
 #### Code features
 
 ##### Validation for APIs
 Every API function checks whether the required fields are defined. If undefined, the function will return an error message to the frontend.
 Validator checks the user inputs from the API calls, such as whether the password has at least 5 characters and is alphanumeric.
+
+##### Persistent login
+Authentication is done with JWTs, where client receives an access token and a refresh token in a HTTP only cookie. Access token is used for accessing protected routes on the backend. When the app loads, the client will send an API call with the refresh token. The refresh token is verified and if the user email and the token exists on the database, a new access token is issued and the user is logged in automatically.
 
 ##### Database
 
@@ -60,6 +64,5 @@ Sequelize is used as the ORM.
 
 ##### Future improvements
 
-- Persistent login with cookies and JWT
 - Multiple lists per user
 - Functionality to update password and email
