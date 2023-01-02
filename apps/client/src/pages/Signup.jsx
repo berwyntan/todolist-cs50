@@ -7,15 +7,18 @@ import { apiSignup } from "../api/user";
 const Signup = () => {
 
   const [error, setError] = useState("") 
+  const [isLoading, setIsLoading] = useState(false)
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
 
   const { register, handleSubmit, formState: { errors } } = useForm()
   const onSubmit = (formData) => {
-    console.log(formData)
+    // console.log(formData)
+    setIsLoading(true)
     apiSignup(formData)
     .then((response) => {
-      console.log(response.data)
+      // console.log(response.data)
+      setIsLoading(false)
       navigate("/")
     })
     .catch((error) => {
@@ -79,7 +82,7 @@ const Signup = () => {
         </div>
   
         <div className="my-1">{error}</div>
-        
+        {isLoading && <div>Signing up...</div>} 
         <button className="btn btn-primary btn-wide" type="submit">Sign Up</button>
         </div>
       </form>

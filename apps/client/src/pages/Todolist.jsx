@@ -1,11 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
-import axios from "axios";
 import { apiGetTodos, apiUpdateTodo } from "../api/todos";
 import NewTodo from "../components/NewTodo";
 import Todo from "../components/Todo";
-
+import Loading from "../components/Loading";
 
 const Todolist = () => {
 
@@ -17,20 +16,6 @@ const Todolist = () => {
   const [ isAdding, setIsAdding ] = useState(false)
   const [ isLoading, setIsLoading ] = useState(false)
   
-  useEffect(() => {
-    setIsLoading(true)
-    apiGetTodos(authDetails?.id)
-    .then((response) => {
-      // console.log(response.data)
-      if (response) {
-        setTodos(response.data)
-      }   
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-    setIsLoading(false)
-  }, [])
 
   const toggleDone = (id, done) => {
     // console.log(id, done)
@@ -74,16 +59,19 @@ const Todolist = () => {
         if (response) {
           setTodos(response.data)
         }   
+        setIsLoading(false)
       })
       .catch((error) => {
         console.log(error)
       })
-      setIsLoading(false)
     }
 
     const delay = setTimeout(getAllTodos, 1000)
-
-    return () => clearTimeout(delay)
+    
+    return () => {
+      clearTimeout(delay)
+      
+    }
     
   }, [change])
 
@@ -120,13 +108,13 @@ const Todolist = () => {
         }
         
       </div>  
-
-      {isLoading && <div className="">Updating...</div>}    
-      
+     
       <div className="flex flex-col max-w-md items-stretch align-center sm:ml-10 md:ml-24">
         {todoCards}
-        {todos.length === 0 && <div className="">No todos</div>}
+        {todos.length === 0 && !isLoading && <div className="">No todos</div>}
       </div>
+
+      {isLoading && <div className="flex justify-center"><Loading /></div>}    
       
     </>
   )

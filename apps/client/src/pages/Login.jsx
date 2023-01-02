@@ -7,7 +7,7 @@ import { AppContext } from "../App";
 
 const Login = () => {
   const [error, setError] = useState("") 
-
+  const [isLoading, setIsLoading] = useState(false)
   const { setAuthDetails } = useContext(AppContext) || {}
 
   const navigate = useNavigate()
@@ -15,12 +15,13 @@ const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const onSubmit = (formData) => {
     // console.log(formData)
-
+    setIsLoading(true)
     apiLogin(formData)
     .then((response) => {
       // console.log(response)
-      if (response.status === 200) {
+      if (response.status === 200) {        
         setAuthDetails(response.data)
+        setIsLoading(false)
         navigate("/todos")
       } else setError(response.data.message)
     })
@@ -63,7 +64,7 @@ const Login = () => {
         </div>
 
         <div className="my-1">{error}</div>
-        {/* {mutation.isLoading && <div>Signing Up...</div>}  */}
+        {isLoading && <div>Logging in...</div>} 
         <button className="btn btn-primary btn-wide" type="submit">Log In</button>
         </div>
       </form>
