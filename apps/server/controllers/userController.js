@@ -87,8 +87,37 @@ const login = async (req, res) => {
         }
     } else {
         return res.status(401).json({ 'message': 'Password incorrect.'});
-    }
-    
+    }    
 }
 
-module.exports = { signup, login }
+const refresh = async (req, res) => {
+    const cookies = req.cookies;
+    if (!cookies?.jwt) return res.status(401).json({ message: "No cookie found" });
+    const refreshToken = cookies.jwt;
+    // console.log(refreshToken);
+
+    const foundUser = await User.findOne({where: { refreshToken }});
+    if (!foundUser) return res.status(403).json({ message: "User not found"});
+    // evaluate jwt 
+    jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decoded) => {
+            if (err || foundUser.email !== decoded.email) return res.status(403).json({ message: "Refresh not allowed"});;
+            const accessToken = jwt.sign(
+                { "email": foundUser.email, },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: '1h' }
+            );
+            const authDetails = {
+                name: foundUser.name,
+                email: foundUser.email,
+                id: foundUser.id,
+                accessToken: accessToken
+            }
+            res.status(200).json(authDetails);
+        }
+    );
+}
+
+module.exports = { signup, login, refresh }

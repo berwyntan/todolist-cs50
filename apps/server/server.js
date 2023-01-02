@@ -10,6 +10,7 @@ const verifyJWT = require('./middleware/verifyJWT');
 
 const userRouter = require("./routes/userRouter");
 const todoRouter = require("./routes/todoRouter");
+const userProtectedRouter = require("./routes/userProtectedRouter");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -17,7 +18,7 @@ const app = express();
 // postgres
 try {
     db.authenticate();
-    console.log('Connected to ElephantSQL');
+    console.log('Connected to DB');
 } catch (error) {
 console.error('Unable to connect to the database:', error);
 }
@@ -25,12 +26,14 @@ console.error('Unable to connect to the database:', error);
 // app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
-app.use(express.static("../client/dist"))
+app.use(express.static("../client/dist"));
 
 app.use("/api/user", userRouter);
 app.use("/api/todo", todoRouter);
 app.use(verifyJWT);
+app.use("/api/userprotected", userProtectedRouter);
 
 app.get("/*", (req, res) => {
     res.sendFile(path.resolve("../client/dist/index.html"));

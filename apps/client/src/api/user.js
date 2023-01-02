@@ -28,4 +28,19 @@ export const apiSignup = async (data) => {
     } catch (error) {
       return response.error
     }
-  }
+}
+
+export const apiRefresh = async () => {
+    try {
+      const response = await axios.get("/api/user/refresh",
+        {
+          withCredentials: true
+        }
+      )
+      // console.log(response)
+      return response
+    } catch (error) {
+      
+      return error.response
+    }
+}

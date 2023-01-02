@@ -1,8 +1,15 @@
 import axios from "axios";
 
-export const apiGetTodos = async (id) => {
+export const apiGetTodos = async (id, accessToken) => {
     try {
-      const response = await axios.get(`/api/todo/${id}`)
+      const response = await axios.get(`/api/todo/${id}`,
+        {
+          headers: { 
+              'Authorization': `Bearer ${accessToken}` 
+          },
+          withCredentials: true
+        }
+      )
       return response
     } catch (error) {
       return response.error
