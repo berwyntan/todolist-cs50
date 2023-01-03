@@ -52,8 +52,11 @@ The backend is running on Node and Express. The API functions are modularized to
 Every API function checks whether the required fields are defined. If undefined, the function will return an error message to the frontend.
 Validator checks the user inputs from the API calls, such as whether the password has at least 5 characters and is alphanumeric.
 
+##### Authentication/API calls with Access Token
+Authentication is done with JWTs, where the client receives an access token. The access token is used for API calls to protected routes on the backend. On the access token is the user's unique id. If the id in request parameters and the id on the access token are not the same, the API call returns an error 403.
+
 ##### Persistent login
-Authentication is done with JWTs, where client receives an access token and a refresh token in a HTTP only cookie. Access token is used for accessing protected routes on the backend. When the app loads, the client will send an API call with the refresh token. The refresh token is verified and if the user email and the token exists on the database, a new access token is issued and the user is logged in automatically.
+Client side receives a refresh token in a HTTP only cookie on logging in. The refresh token lasts for 2 days. When the app loads, the client will send an API call with the refresh token via useEffect. The refresh token is verified and if the user email and the token exists on the database, a new access token is issued and the user is logged in automatically.
 
 ##### Database
 

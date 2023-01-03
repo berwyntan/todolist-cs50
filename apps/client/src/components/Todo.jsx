@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { apiUpdateTodo } from "../api/todos";
+import { AppContext } from "../App";
 
 const Todo = ({ toggleDone, todo, setChange }) => {
 
     const [ edit, setEdit ] = useState(false)
     const [ text, setText ] = useState(todo.text)
     // console.log(todo.UserId)
+    const { authDetails } = useContext(AppContext) || {}
 
     const submit = (e) => {
         e.preventDefault()
@@ -21,7 +23,7 @@ const Todo = ({ toggleDone, todo, setChange }) => {
         }
         // console.log(data)
         // console.log(todo.id)
-        apiUpdateTodo(todo.id, data)
+        apiUpdateTodo(todo.id, data, authDetails?.accessToken)
         .then((response) => {
             // console.log(response.data)
             if (response) {
@@ -54,7 +56,7 @@ const Todo = ({ toggleDone, todo, setChange }) => {
             <label className="label cursor-pointer justify-items-end">
                 {/* <span className="label-text text-xl">{todo.text}</span>  */}
                 <input type="checkbox" checked={todo.done} className="checkbox checkbox-primary"
-                onChange={() => toggleDone(todo.id, todo.done)}
+                onChange={() => toggleDone(todo.id, todo.done)} id={`${todo.id}`}
                 />
             </label>
             </div>          

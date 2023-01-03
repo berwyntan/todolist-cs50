@@ -22,7 +22,7 @@ const Login = () => {
       if (response.status === 200) {        
         setAuthDetails(response.data)
         setIsLoading(false)
-        navigate("/todos")
+        navigate("/")
       } else setError(response.data.message)
     })
     .catch((error) => {

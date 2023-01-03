@@ -9,16 +9,23 @@ import Loading from "../components/Loading";
 const Todolist = () => {
 
   const { authDetails } = useContext(AppContext) || {}
-
+  
   const [ todos, setTodos ] = useState([])
   const [ change, setChange ] = useState(0)
 
   const [ isAdding, setIsAdding ] = useState(false)
-  const [ isLoading, setIsLoading ] = useState(false)
-  
+  const [ isLoading, setIsLoading ] = useState(false)  
 
   const toggleDone = (id, done) => {
-    // console.log(id, done)
+    // disable checkbox on click
+    // const checkbox = document.getElementById(id)
+    // if (done) {
+    //   checkbox.setAttribute("disabled checked", true)
+    // } else {
+    //   checkbox.setAttribute("disabled", true)
+    // }
+    
+
     const edit = todos.find(todo => todo.id === id)      
     const update = {
       ...edit,
@@ -41,7 +48,7 @@ const Todolist = () => {
         done: update.done,
         text: update.text,
         userId: update.UserId
-      })
+      }, authDetails?.accessToken)
     }
 
     updateServer()
@@ -53,7 +60,7 @@ const Todolist = () => {
 
     const getAllTodos = () => {
       setIsLoading(true)
-      apiGetTodos(authDetails?.id)
+      apiGetTodos(authDetails?.id, authDetails?.accessToken)
       .then((response) => {
         // console.log(response.data)
         if (response) {
@@ -66,7 +73,7 @@ const Todolist = () => {
       })
     }
 
-    const delay = setTimeout(getAllTodos, 1000)
+    const delay = setTimeout(getAllTodos, 500)
     
     return () => {
       clearTimeout(delay)
@@ -86,9 +93,9 @@ const Todolist = () => {
   return (
     <>
       {
-        authDetails.email ?
+        authDetails?.email ?
         <Outlet /> :
-        <Navigate to="/" />
+        <Navigate to="/login" />
       }
       
       <div className="text-left font-semibold text-xl italic sm:ml-10 md:ml-28 my-2">{`${authDetails.name}'s`} ToDoList</div>

@@ -16,11 +16,15 @@ export const apiGetTodos = async (id, accessToken) => {
     }
   }
 
-export const apiUpdateTodo = async (id, data) => {
+export const apiUpdateTodo = async (id, data, accessToken) => {
     try {
       const response = await axios.post(`/api/todo/${id}`, data,
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: 
+            { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`
+            },
           withCredentials: true
         }
       )
@@ -30,29 +34,49 @@ export const apiUpdateTodo = async (id, data) => {
     }
   }
 
-export const apiGetPrevTodos = async (id) => {
+export const apiGetPrevTodos = async (id, accessToken) => {
     try {
-      const response = await axios.get(`/api/todo/done/${id}`)
+      const response = await axios.get(`/api/todo/done/${id}`, 
+      {
+        headers: 
+          { 
+            'Authorization': `Bearer ${accessToken}`
+          },
+        withCredentials: true
+      }
+      )
       return response
     } catch (error) {
       return response.error
     }
   }
 
-export const apiDeletePrevTodos = async (id) => {
+export const apiDeletePrevTodos = async (id, accessToken) => {
     try {
-      const response = await axios.delete(`/api/todo/done/${id}`)
+      const response = await axios.delete(`/api/todo/done/${id}`,
+      {
+        headers: 
+          { 
+            'Authorization': `Bearer ${accessToken}`
+          },
+        withCredentials: true
+      }
+      )
       return response
     } catch (error) {
       return response.error
     }
   }
 
-export const apiAddTodos = async (data) => {
+export const apiAddTodos = async (data, accessToken) => {
     try {
       const response = await axios.post("/api/todo", data,
         {
-            headers: { 'Content-Type': 'application/json' },
+            headers: 
+            { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`
+            },            
             withCredentials: true
         })
         // console.log(response)

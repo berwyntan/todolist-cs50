@@ -14,23 +14,15 @@ const Completed = () => {
 
   const [ isLoading, setIsLoading ] = useState(false)
 
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   apiGetPrevTodos(authDetails?.id)
-  //   .then((response) => {
-  //     // console.log(response.data)
-  //     if (response) {
-  //       setTodos(response.data)
-  //     }   
-  //   })
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
-  //   setIsLoading(false)
-  // }, [])
-
   const toggleDone = (id, done) => {
-    // console.log(id, done)
+    // disable checkbox on click
+    // const checkbox = document.getElementById(id)
+    // if (done) {
+    //   checkbox.setAttribute("disabled checked", true)
+    // } else {
+    //   checkbox.setAttribute("disabled", true)
+    // }
+
     const edit = todos.find(todo => todo.id === id)      
     const update = {
       ...edit,
@@ -53,7 +45,7 @@ const Completed = () => {
         done: update.done,
         text: update.text,
         userId: update.UserId
-      })
+      }, authDetails?.accessToken)
     }
 
     updateServer()
@@ -65,7 +57,7 @@ const Completed = () => {
 
     const getAllTodos = () => {
       setIsLoading(true)
-      apiGetPrevTodos(authDetails?.id)
+      apiGetPrevTodos(authDetails?.id, authDetails?.accessToken)
       .then((response) => {
         // console.log(response.data)
         if (response) {
@@ -78,15 +70,15 @@ const Completed = () => {
       })
     }
 
-    const delay = setTimeout(getAllTodos, 1000)
+    const delay = setTimeout(getAllTodos, 500)
 
     return () => clearTimeout(delay)
     
   }, [change])
 
-  const deletePrevTodos = (id) => {
+  const deletePrevTodos = (id, setIsLoading) => {
     setIsLoading(true)
-    apiDeletePrevTodos(id)
+    apiDeletePrevTodos(id, authDetails?.accessToken)
     .then((response) => {
       // console.log(response.data)
       if (response) {
@@ -119,7 +111,7 @@ const Completed = () => {
       </div>
       <div className="flex items-start">
       <button className="btn btn-secondary sm:ml-10 md:ml-28 my-2" 
-              onClick={() => {deletePrevTodos(authDetails.id)}}>Clear All</button>
+              onClick={() => {deletePrevTodos(authDetails.id, setIsLoading)}}>Clear All</button>
       </div>
       
       <div className="flex flex-col max-w-md items-stretch align-center sm:ml-10 md:ml-24">

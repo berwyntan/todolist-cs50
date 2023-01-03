@@ -31,8 +31,8 @@ app.use(cookieParser());
 app.use(express.static("../client/dist"));
 
 app.use("/api/user", userRouter);
-app.use("/api/todo", todoRouter);
 app.use(verifyJWT);
+app.use("/api/todo", todoRouter);
 app.use("/api/userprotected", userProtectedRouter);
 
 app.get("/*", (req, res) => {

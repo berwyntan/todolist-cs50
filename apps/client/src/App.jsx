@@ -7,6 +7,7 @@ import Signup from './pages/Signup'
 import Todolist from './pages/Todolist'
 import Layout from './pages/Layout'
 import Completed from './pages/Completed'
+import NotFound from './pages/NotFound'
 
 export const AppContext = createContext()
 
@@ -25,11 +26,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<Login />}/>
-            <Route path="/signup" element={<Signup />}/>
-            <Route path="/todos" element={<Todolist />}/>
+            <Route path="/" element={<Todolist />}/>
+            <Route path="/login" element={<Login />}/>
+            <Route path="/signup" element={<Signup />}/>            
             <Route path="/completed" element={<Completed />}/>
-          </Route>
+            <Route path="*" element={<NotFound />} />
+          </Route>          
         </Routes>
       </BrowserRouter>
       </AppContext.Provider>

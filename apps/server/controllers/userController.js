@@ -59,12 +59,12 @@ const login = async (req, res) => {
 
             // create JWTs
             const accessToken = jwt.sign(
-                { "email": foundUser.email, },
+                { "id": foundUser.id, },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '1h' }
             );
             const refreshToken = jwt.sign(
-                { "email": foundUser.email, },
+                { "id": foundUser.id, },
                 process.env.REFRESH_TOKEN_SECRET,
                 { expiresIn: '2d' }
             );
@@ -103,9 +103,9 @@ const refresh = async (req, res) => {
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
-            if (err || foundUser.email !== decoded.email) return res.status(403).json({ message: "Refresh not allowed"});;
+            if (err || foundUser.id !== decoded.id) return res.status(403).json({ message: "Refresh not allowed"});;
             const accessToken = jwt.sign(
-                { "email": foundUser.email, },
+                { "id": foundUser.id, },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '1h' }
             );

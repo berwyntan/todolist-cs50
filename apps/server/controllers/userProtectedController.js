@@ -1,7 +1,4 @@
 const { User } = require('../model');
-const bcrypt = require('bcrypt');
-const validator = require('validator');
-const jwt = require('jsonwebtoken');
 
 const logout = async (req, res) => {
     const cookies = req.cookies;

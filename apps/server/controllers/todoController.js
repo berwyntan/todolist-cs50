@@ -7,6 +7,8 @@ const addTodo = async (req, res) => {
         return res.status(400).json({ 'message': 'User id and todo are required.'});
     if (!validator.isLength(text, {max: 255})) 
         return res.status(400).json({ 'message': 'Todo cannot be more than 255 characters.'});
+    if ( userId !== req.id)
+        return res.status(403).json({ 'message': 'User not logged in'})
     
     try {
         const userExists = await User.findByPk(userId);
@@ -40,13 +42,15 @@ const addTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
     const { text, done, userId } = req.body;
     const { id } = req.params;
-    console.log(text, done, id, userId)
+    // console.log(text, done, id, userId)
     if (!id || !text) 
         return res.status(400).json({ 'message': 'Todo id, status and todo are required.'});
     if (!validator.isLength(text, {max: 255})) 
         return res.status(400).json({ 'message': 'Todo cannot be more than 255 characters.'});
     if (typeof done !== "boolean")
         return res.status(400).json({ 'message': 'Todo status invalid.'});
+    if ( userId !== req.id)
+        return res.status(403).json({ 'message': 'User not logged in'})
     
     const todoExists = await Todo.findByPk(id);
     if (!todoExists) return res.status(401).json({ 'message': 'Todo not found.'});
@@ -78,6 +82,8 @@ const updateTodo = async (req, res) => {
 
 const getTodosByUser = async (req, res) => {
     const { id } = req.params;
+    if ( id !== req.id)
+        return res.status(403).json({ 'message': 'User not logged in'})
     try {
         const userExists = await User.findByPk(id);
         if (!userExists) return res.status(401).json({ 'message': 'User not found.'});
@@ -96,6 +102,8 @@ const getTodosByUser = async (req, res) => {
 
 const getPrevTodosByUser = async (req, res) => {
     const { id } = req.params;
+    if ( id !== req.id)
+        return res.status(403).json({ 'message': 'User not logged in'})
     try {
         const userExists = await User.findByPk(id);
         if (!userExists) return res.status(401).json({ 'message': 'User not found.'});
@@ -114,6 +122,8 @@ const getPrevTodosByUser = async (req, res) => {
 
 const deletePrevTodosByUser = async (req, res) => {
     const { id } = req.params;
+    if ( id !== req.id)
+        return res.status(403).json({ 'message': 'User not logged in'})
     try {
         const userExists = await User.findByPk(id);
         if (!userExists) return res.status(401).json({ 'message': 'User not found.'});

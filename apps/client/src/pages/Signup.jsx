@@ -19,7 +19,7 @@ const Signup = () => {
     .then((response) => {
       // console.log(response.data)
       setIsLoading(false)
-      navigate("/")
+      navigate("/login")
     })
     .catch((error) => {
       console.log(error)

@@ -14,7 +14,10 @@ const Layout = () => {
     .then((response) => {
       if ('accessToken' in response.data) {
         setAuthDetails(response.data)
-        navigate('/todos')
+        navigate('/')
+      }
+      else {
+        navigate('/login')
       }
     })
   }
