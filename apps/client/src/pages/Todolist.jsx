@@ -52,6 +52,9 @@ const Todolist = () => {
     }
 
     updateServer()
+    .catch((error) => {
+      console.log(error)
+    })
     setChange(prev => prev + 1)
     // console.log(change)
   }

@@ -25,7 +25,7 @@ function App() {
       <AppContext.Provider value={context}>
       <BrowserRouter>
         <Routes>
-          <Route element={<Layout />}>
+          <Route path="/" element={<Layout />}>
             <Route path="/" element={<Todolist />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/signup" element={<Signup />}/>            
