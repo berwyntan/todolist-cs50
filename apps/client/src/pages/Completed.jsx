@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import { apiGetPrevTodos, apiUpdateTodo, apiDeletePrevTodos } from "../api/todos";
@@ -14,7 +14,9 @@ const Completed = () => {
 
   const [ isLoading, setIsLoading ] = useState(false)
 
-  const toggleDone = (id, done) => {
+  const navigate = useNavigate()
+
+  const toggleDone = async (id, done) => {
     // disable checkbox on click
     // const checkbox = document.getElementById(id)
     // if (done) {
@@ -38,19 +40,22 @@ const Completed = () => {
     })
 
     const updateServer = async () => {
-      // console.log(update.id)
-      // console.log(update.done)
-      // console.log(update.text)
-      apiUpdateTodo(update.id, {
+      await apiUpdateTodo(update.id, {
         done: update.done,
         text: update.text,
         userId: update.UserId
       }, authDetails?.accessToken)
+      // navigate("/")
+      setChange(prev => prev + 1)
     }
 
-    updateServer()
-    setChange(prev => prev + 1)
-    // console.log(change)
+    try {
+      await updateServer()
+      // navigate("/")
+      // setChange(prev => prev + 1)
+    } catch (error) {
+      navigate("/")
+    }  
   }
 
   useEffect(() => {
@@ -67,6 +72,7 @@ const Completed = () => {
       })
       .catch((error) => {
         console.log(error)
+        navigate("/")
       })
     }
 

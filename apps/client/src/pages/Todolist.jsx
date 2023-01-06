@@ -1,7 +1,8 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import { apiGetTodos, apiUpdateTodo } from "../api/todos";
+import { apiRefresh } from "../api/user";
 import NewTodo from "../components/NewTodo";
 import Todo from "../components/Todo";
 import Loading from "../components/Loading";
@@ -16,7 +17,9 @@ const Todolist = () => {
   const [ isAdding, setIsAdding ] = useState(false)
   const [ isLoading, setIsLoading ] = useState(false)  
 
-  const toggleDone = (id, done) => {
+  const navigate = useNavigate()
+
+  const toggleDone = async (id, done) => {
     // disable checkbox on click
     // const checkbox = document.getElementById(id)
     // if (done) {
@@ -39,24 +42,24 @@ const Todolist = () => {
       temp[editIndex] = update
       return [...temp]
     })
-
+    
     const updateServer = async () => {
-      // console.log(update.id)
-      // console.log(update.done)
-      // console.log(update.text)
-      apiUpdateTodo(update.id, {
+      await apiUpdateTodo(update.id, {
         done: update.done,
         text: update.text,
         userId: update.UserId
       }, authDetails?.accessToken)
+      // navigate("/")
+      setChange(prev => prev + 1)
     }
 
-    updateServer()
-    .catch((error) => {
-      console.log(error)
-    })
-    setChange(prev => prev + 1)
-    // console.log(change)
+    try {
+      await updateServer()
+      // navigate("/")
+      // setChange(prev => prev + 1)
+    } catch (error) {
+      navigate("/")
+    }  
   }
 
   useEffect(() => {
@@ -65,7 +68,6 @@ const Todolist = () => {
       setIsLoading(true)
       apiGetTodos(authDetails?.id, authDetails?.accessToken)
       .then((response) => {
-        // console.log(response.data)
         if (response) {
           setTodos(response.data)
         }   
@@ -73,15 +75,13 @@ const Todolist = () => {
       })
       .catch((error) => {
         console.log(error)
+        navigate("/")
       })
     }
 
     const delay = setTimeout(getAllTodos, 500)
     
-    return () => {
-      clearTimeout(delay)
-      
-    }
+    return () => clearTimeout(delay)
     
   }, [change])
 

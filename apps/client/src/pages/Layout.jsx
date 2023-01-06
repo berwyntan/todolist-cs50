@@ -12,8 +12,8 @@ const Layout = () => {
   const useRefresh = () => {
     apiRefresh()
     .then((response) => {
-      if ('accessToken' in response.data) {
-        setAuthDetails(response.data)
+      if (response?.data?.accessToken) {
+        setAuthDetails(response?.data)
         navigate('/')
       }
       else {
