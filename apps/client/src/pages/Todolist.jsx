@@ -2,7 +2,6 @@ import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import { apiGetTodos, apiUpdateTodo } from "../api/todos";
-import { apiRefresh } from "../api/user";
 import NewTodo from "../components/NewTodo";
 import Todo from "../components/Todo";
 import Loading from "../components/Loading";
@@ -113,7 +112,7 @@ const Todolist = () => {
               setChange={setChange}
             />
           </div> :
-          <button className="btn btn-secondary sm:ml-10 md:ml-28 my-2" 
+          <button className="btn btn-primary dark:btn-secondary sm:ml-10 md:ml-28 my-2" 
             onClick={() => {setIsAdding(prev => !prev)}}>Add Todo</button>
         }
         
