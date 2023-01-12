@@ -62,7 +62,7 @@ const Todo = ({ toggleDone, todo, setChange }) => {
                 />
             </label>
             <div className="flex dark:invert items-center ml-3">
-                <Link to="/heatmap">
+                <Link to={`/heatmap/${todo.id}`}>
                 <img className="max-h-6 mb-2 opacity-75" src={calendar} />
                 </Link>
             </div>

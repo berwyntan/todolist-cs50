@@ -31,7 +31,7 @@ function App() {
             <Route path="/login" element={<Login />}/>
             <Route path="/signup" element={<Signup />}/>            
             <Route path="/completed" element={<Completed />}/>
-            <Route path="/heatmap" element={<Heatmap />}/>
+            <Route path="/heatmap/:id" element={<Heatmap />}/>
             <Route path="*" element={<NotFound />} />
           </Route>          
         </Routes>

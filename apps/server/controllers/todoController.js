@@ -1,4 +1,4 @@
-const { User, Todo } = require('../model');
+const { User, Todo, Habit } = require('../model');
 const validator = require('validator');
 
 const addTodo = async (req, res) => {
@@ -40,11 +40,11 @@ const addTodo = async (req, res) => {
     }
 }
 const updateTodo = async (req, res) => {
-    const { text, done, userId } = req.body;
+    const { text, done, userId, date } = req.body;
     const { id } = req.params;
     // console.log(text, done, id, userId)
-    if (!id || !text) 
-        return res.status(400).json({ 'message': 'Todo id, status and todo are required.'});
+    if (!id || !text || !date) 
+        return res.status(400).json({ 'message': 'Todo id, status, date and todo are required.'});
     if (!validator.isLength(text, {max: 255})) 
         return res.status(400).json({ 'message': 'Todo cannot be more than 255 characters.'});
     if (typeof done !== "boolean")
@@ -66,6 +66,34 @@ const updateTodo = async (req, res) => {
             order = latest.order + 1
         }
     }
+    // TODO: update habit table
+    // find habit with todo id & todays date (in string format)
+    if (done) {
+        const habitFound = await Habit.findOne({
+            where: { TodoId: id, date: date }
+        })
+        // if exists, add to count
+        if (habitFound) {
+            try {
+                const count = habitFound.count + 1
+                
+                await Habit.update({count: count}, {
+                    where: {
+                        TodoId: id, date: date
+                    }
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            // else create new
+            await Habit.create({
+                TodoId: id,
+                count: 1,
+                date: date
+            })
+        }
+    }    
 
     try {
         const result = await Todo.update({text: text, done: done, order: order}, {
@@ -130,6 +158,8 @@ const deletePrevTodosByUser = async (req, res) => {
     } catch (error) {
         return res.status(400).json({ 'message': error.message });
     }
+    // TODO: FIND TODOS TO DELETE
+    // THEN FIND HABITS LINKED TO THOSE TODOS AND DELETE
     try {
         const result = await Todo.destroy({where: {
             UserId: id, done: true}
@@ -140,4 +170,20 @@ const deletePrevTodosByUser = async (req, res) => {
     }
 }
 
-module.exports = { addTodo, getTodosByUser, updateTodo, getPrevTodosByUser, deletePrevTodosByUser }
+const getHabitsOfTodo = async (req, res) => {
+    const { id } = req.params;
+    const todoExists = await Todo.findByPk(id)
+    if (!todoExists) return res.status(401).json({ 'message': 'Todo not found.'});
+    if ( todoExists.UserId !== req.id)
+        return res.status(403).json({ 'message': 'User not logged in'})
+    
+    try {
+        const result = await Habit.findAll({where: {TodoId: id}});
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json({ 'message': error.message });
+    }
+}
+
+module.exports = { addTodo, getTodosByUser, updateTodo, getPrevTodosByUser, 
+    deletePrevTodosByUser, getHabitsOfTodo }

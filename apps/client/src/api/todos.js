@@ -85,3 +85,20 @@ export const apiAddTodos = async (data, accessToken) => {
       return response.error
     }
   }
+
+  export const apiGetHabitsOfTodo = async (id, accessToken) => {
+    try {
+      const response = await axios.get(`/api/todo/habit/${id}`,
+        {
+            headers: 
+            { 
+              'Authorization': `Bearer ${accessToken}`
+            },            
+            withCredentials: true
+        })
+      console.log(response)
+      return response
+    } catch (error) {
+      return response.error
+    }
+  }

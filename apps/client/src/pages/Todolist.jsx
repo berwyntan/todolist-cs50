@@ -5,6 +5,7 @@ import { apiGetTodos, apiUpdateTodo } from "../api/todos";
 import NewTodo from "../components/NewTodo";
 import Todo from "../components/Todo";
 import Loading from "../components/Loading";
+import dayjs from "dayjs";
 
 const Todolist = () => {
 
@@ -28,7 +29,8 @@ const Todolist = () => {
     // }
     
 
-    const edit = todos.find(todo => todo.id === id)      
+    const edit = todos.find(todo => todo.id === id)     
+    // console.log(dayjs(edit.createdAt).format('YYYY/MM/DD')) 
     const update = {
       ...edit,
       done: !done
@@ -46,7 +48,8 @@ const Todolist = () => {
       await apiUpdateTodo(update.id, {
         done: update.done,
         text: update.text,
-        userId: update.UserId
+        userId: update.UserId,
+        date: dayjs().format('YYYY/MM/DD')
       }, authDetails?.accessToken)
       // navigate("/")
       setChange(prev => prev + 1)

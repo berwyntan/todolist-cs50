@@ -54,4 +54,25 @@ User.hasMany(Todo);
 Todo.belongsTo(User);
 Todo.sync({alter: true});
 
-module.exports = { User, Todo }
+const Habit = db.define('Habit', {
+  
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+  },
+  count: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+    allowNull: false
+  },
+  date: {
+    type: DataTypes.STRING,
+  }
+});
+
+Todo.hasMany(Habit);
+Habit.belongsTo(Todo);
+Habit.sync({alter: true});
+
+module.exports = { User, Todo, Habit }

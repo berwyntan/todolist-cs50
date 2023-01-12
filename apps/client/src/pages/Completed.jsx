@@ -4,6 +4,7 @@ import { AppContext } from "../App";
 import { apiGetPrevTodos, apiUpdateTodo, apiDeletePrevTodos } from "../api/todos";
 import Todo from "../components/Todo";
 import Loading from "../components/Loading";
+import dayjs from "dayjs";
 
 const Completed = () => {
 
@@ -43,7 +44,8 @@ const Completed = () => {
       await apiUpdateTodo(update.id, {
         done: update.done,
         text: update.text,
-        userId: update.UserId
+        userId: update.UserId,
+        date: dayjs().format('YYYY/MM/DD')
       }, authDetails?.accessToken)
       // navigate("/")
       setChange(prev => prev + 1)
