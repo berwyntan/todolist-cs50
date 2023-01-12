@@ -8,6 +8,7 @@ import Todolist from './pages/Todolist'
 import Layout from './pages/Layout'
 import Completed from './pages/Completed'
 import NotFound from './pages/NotFound'
+import Heatmap from './pages/Heatmap'
 
 export const AppContext = createContext()
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/login" element={<Login />}/>
             <Route path="/signup" element={<Signup />}/>            
             <Route path="/completed" element={<Completed />}/>
+            <Route path="/heatmap" element={<Heatmap />}/>
             <Route path="*" element={<NotFound />} />
           </Route>          
         </Routes>
