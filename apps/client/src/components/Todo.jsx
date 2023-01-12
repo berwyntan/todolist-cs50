@@ -1,6 +1,8 @@
 import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { apiUpdateTodo } from "../api/todos";
 import { AppContext } from "../App";
+import calendar from "../assets/calendar.png";
 
 const Todo = ({ toggleDone, todo, setChange }) => {
 
@@ -59,6 +61,11 @@ const Todo = ({ toggleDone, todo, setChange }) => {
                 onChange={() => toggleDone(todo.id, todo.done)} id={`${todo.id}`}
                 />
             </label>
+            <div className="flex dark:invert items-center ml-3">
+                <Link to="/heatmap">
+                <img className="max-h-6 mb-2 opacity-75" src={calendar} />
+                </Link>
+            </div>
             </div>          
         </div>
         </>

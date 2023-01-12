@@ -29,19 +29,7 @@ const Navbar = () => {
           <Link to="/completed">
             <div className="btn btn-ghost normal-case text-lg ml-10 sm:ml-24">Done</div>  
           </Link>   
-        }        
-        {
-          name &&
-          <Link to="/heatmap">
-            <div className="btn btn-ghost normal-case text-lg ml-10 sm:ml-24">Heatmap</div>  
-          </Link>   
-        }        
-        {
-          name &&
-          <Link to="/completed">
-            <div className="btn btn-ghost normal-case text-lg ml-10 sm:ml-24">Done</div>  
-          </Link>   
-        }        
+        }               
         {name && <div className="ml-10 cursor-pointer" onClick={logout}>Logout</div>}
         {!name && <div className="btn btn-ghost normal-case text-lg ml-10 sm:ml-24">ToDo List</div>}
     </div>
