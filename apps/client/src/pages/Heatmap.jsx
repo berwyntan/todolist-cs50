@@ -5,20 +5,6 @@ import dayjs from 'dayjs'
 import { apiGetHabitsOfTodo } from '../api/todos';
 import { AppContext } from "../App";
 
-// const value = [
-//   { date: '2016/01/11', count: 2 },
-//   { date: '2016/01/12', count: 20 },
-//   { date: '2016/01/13', count: 10 },
-//   ...[...Array(17)].map((_, idx) => ({ date: `2016/02/${idx + 10}`, count: idx, content: '' })),
-//   { date: '2016/04/11', count: 2 },
-//   { date: '2016/05/01', count: 5 },
-//   { date: '2016/05/02', count: 5 },
-//   { date: '2022/05/04', count: 11 },
-//   { date: '2022/11/04', count: 11 },
-// ];
-
-
-
 const Heatmap = () => {
 
   const { id } = useParams()
@@ -56,7 +42,7 @@ const Heatmap = () => {
     getHabit()
   }, [])
   
-  const firstColor = darkMode ? '#334155' : '#EBEDF0'
+  const firstColor = darkMode ? '#1e293b' : '#cbd5e1'
   // console.log(dayjs(dayjs().subtract(1, 'year')).toDate())
   // console.log(new Date())
   return (
@@ -67,9 +53,10 @@ const Heatmap = () => {
         value={value} 
         // endDate={(dayjs().subtract(1, 'year')).toDate()} 
         startDate={(dayjs().subtract(1, 'year')).toDate()} 
-        width={725}
-        style={darkMode ? { color: '#EBEDF0' } : { color: '#1e293b'}}
-        panelColors={{ 0: `${firstColor}`, 1: '#7BC96F', 2: '#C6E48B', 4: '#239A3B', 6: '#196127' }}
+        rectSize={12}
+        width={775}
+        style={darkMode ? { color: '#e2e8f0' } : { color: '#1e293b'}}
+        panelColors={{ 0: `${firstColor}`, 1: '#4ade80', 2: '#22c55e', 4: '#16a34a', 6: '#15803d' }}
         rectRender={(props, data) => {
           // if (!data.count) return <rect {...props} />;
           // console.log(props)
@@ -84,10 +71,13 @@ const Heatmap = () => {
         }}
         />
     </div>
-    <div className=''>
+    <div className='visible md:invisible ml-6'>
+      Heatmap is better viewed in landscape mode
+    </div>
+    <div className='invisible md:visible text-left sm:ml-10 md:ml-72'>
       Date: {dayjs(info.date).format('D MMM YYYY')}
     </div>
-    <div className=''>
+    <div className='invisible md:visible text-left sm:ml-10 md:ml-80'>
       Count: {info.count ?? 0}
     </div>
     </>

@@ -158,12 +158,13 @@ const deletePrevTodosByUser = async (req, res) => {
     } catch (error) {
         return res.status(400).json({ 'message': error.message });
     }
-    // TODO: FIND TODOS TO DELETE
-    // THEN FIND HABITS LINKED TO THOSE TODOS AND DELETE
+        
     try {
         const result = await Todo.destroy({where: {
             UserId: id, done: true}
         })
+        // delete habits with no TodoId (cos the Todo got deleted)
+        await Habit.destroy({where: { TodoId: null}})
         return res.status(200).json(result)
     } catch (error) {
         return res.status(500).json({ 'message': error.message });

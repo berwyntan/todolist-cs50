@@ -46,26 +46,28 @@ const Todo = ({ toggleDone, todo, setChange }) => {
                 edit ?
                 <form className="" onSubmit={(e) => submit(e)}>
                     <input type="text" placeholder="Type here" autoFocus
-                        className="input w-full max-w-xs" value={text} onChange={(e) => {setText(e.target.value)}}/>
+                        className="input w-full max-w-xs text-left" value={text} onChange={(e) => {setText(e.target.value)}}/>
                 </form> :
-                <div className="text-xl flex flex-start justify-items-start"  
+                <div className="text-lg flex flex-start justify-items-start text-left"  
                     onClick={() => setEdit(prev => !prev)}>{todo.text}</div>
             }
             
             
             </div>
+
             <div className="flex items-end right-0">
+            <div className="flex dark:invert items-center ml-3">
+                <Link to={`/heatmap/${todo.id}`}>
+                <img className="max-h-6 mb-2 mr-3 opacity-75" src={calendar} />
+                </Link>
+            </div>
             <label className="label cursor-pointer justify-items-end">
                 {/* <span className="label-text text-xl">{todo.text}</span>  */}
                 <input type="checkbox" checked={todo.done} className="checkbox checkbox-primary"
                 onChange={() => toggleDone(todo.id, todo.done)} id={`${todo.id}`}
                 />
             </label>
-            <div className="flex dark:invert items-center ml-3">
-                <Link to={`/heatmap/${todo.id}`}>
-                <img className="max-h-6 mb-2 opacity-75" src={calendar} />
-                </Link>
-            </div>
+            
             </div>          
         </div>
         </>
