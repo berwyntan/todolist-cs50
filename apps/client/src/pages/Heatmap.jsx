@@ -25,7 +25,7 @@ const Heatmap = () => {
 
     const getHabit = async () => {
       const response = await apiGetHabitsOfTodo(id, authDetails.accessToken)
-      console.log(response.data)
+      // console.log(response.data)
       if (response.data.length > 0) {
         const habits = response.data.map(habit => {
           return ({
@@ -33,7 +33,7 @@ const Heatmap = () => {
             count: habit.count
           })
         })
-        console.log(habits)
+        // console.log(habits)
         setValue(habits)
       }
       

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { apiUpdateTodo } from "../api/todos";
 import { AppContext } from "../App";
 import calendar from "../assets/calendar.png";
+import dayjs from "dayjs";
 
 const Todo = ({ toggleDone, todo, setChange }) => {
 
@@ -21,7 +22,8 @@ const Todo = ({ toggleDone, todo, setChange }) => {
         const data = {
             text: e.target[0].value,
             done: todo.done,
-            userId: todo.UserId
+            userId: todo.UserId,
+            date: dayjs().format('YYYY/MM/DD')
         }
         // console.log(data)
         // console.log(todo.id)

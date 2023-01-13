@@ -81,7 +81,7 @@ const Todolist = () => {
       })
     }
 
-    const delay = setTimeout(getAllTodos, 500)
+    const delay = setTimeout(getAllTodos, 50)
     
     return () => clearTimeout(delay)
     

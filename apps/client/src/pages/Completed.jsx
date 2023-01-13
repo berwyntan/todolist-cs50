@@ -66,7 +66,7 @@ const Completed = () => {
       setIsLoading(true)
       apiGetPrevTodos(authDetails?.id, authDetails?.accessToken)
       .then((response) => {
-        // console.log(response.data)
+        console.log(response.data)
         if (response) {
           setTodos(response.data)
         }   
