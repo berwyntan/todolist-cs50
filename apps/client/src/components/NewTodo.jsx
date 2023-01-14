@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { apiAddTodos } from '../api/todos';
 import { AppContext } from "../App";
+import useTodoStore from "../hooks/useTodoStore";
 
 const NewTodo = ({ userId, setIsAdding, setChange }) => {
 
@@ -8,7 +9,8 @@ const NewTodo = ({ userId, setIsAdding, setChange }) => {
     const [ isError, setIsError ] = useState(false)
     const [ todo, setTodo ] = useState("")
 
-    const { authDetails } = useContext(AppContext) || {}
+    // const { authDetails } = useContext(AppContext) || {}
+    const authDetails = useTodoStore((state) => state.authDetails)
 
     const handleTodo = (e) => {
         if (e.target.value) setIsError(false)

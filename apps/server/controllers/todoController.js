@@ -180,7 +180,7 @@ const getHabitsOfTodo = async (req, res) => {
     
     try {
         const result = await Habit.findAll({where: {TodoId: id}});
-        return res.status(200).json(result);
+        return res.status(200).json({result: result, todo: todoExists});
     } catch (error) {
         return res.status(500).json({ 'message': error.message });
     }

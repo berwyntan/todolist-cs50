@@ -4,13 +4,16 @@ import HeatMap from '@uiw/react-heat-map'
 import dayjs from 'dayjs'
 import { apiGetHabitsOfTodo } from '../api/todos';
 import { AppContext } from "../App";
+import useTodoStore from "../hooks/useTodoStore";
 
 const Heatmap = () => {
 
   const { id } = useParams()
-  const { authDetails } = useContext(AppContext) || {}
+  // const { authDetails } = useContext(AppContext) || {}
+  const authDetails = useTodoStore((state) => state.authDetails)
 
   const [ value, setValue ] = useState([])
+  const [ title, setTitle ] = useState("")
   const [ info, setInfo ] = useState({})
   const [ darkMode, setDarkMode ] = useState(false)
 
@@ -26,8 +29,9 @@ const Heatmap = () => {
     const getHabit = async () => {
       const response = await apiGetHabitsOfTodo(id, authDetails.accessToken)
       // console.log(response.data)
-      if (response.data.length > 0) {
-        const habits = response.data.map(habit => {
+      setTitle(response.data.todo.text)
+      if (response.data.result.length > 0) {
+        const habits = response.data.result.map(habit => {
           return ({
             date: habit.date,
             count: habit.count
@@ -47,7 +51,8 @@ const Heatmap = () => {
   // console.log(new Date())
   return (
     <>
-    <div className='text-xl my-3'>Habit</div>
+    <div className='flex flex-col items-center'>
+    <div className='text-xl my-3'>{title}</div>
     <div className=''>
       <HeatMap 
         value={value} 
@@ -71,14 +76,15 @@ const Heatmap = () => {
         }}
         />
     </div>
-    <div className='visible md:invisible ml-6'>
-      Heatmap is better viewed in landscape mode
+    <div className='visible md:invisible'>
+      Heatmap is best viewed in landscape mode
     </div>
-    <div className='invisible md:visible text-left sm:ml-10 md:ml-72'>
+    <div className='invisible md:visible'>
       Date: {dayjs(info.date).format('D MMM YYYY')}
     </div>
-    <div className='invisible md:visible text-left sm:ml-10 md:ml-80'>
+    <div className='invisible md:visible'>
       Count: {info.count ?? 0}
+    </div>
     </div>
     </>
   )

@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { apiUpdateTodo } from "../api/todos";
 import { AppContext } from "../App";
+import useTodoStore from "../hooks/useTodoStore";
 import calendar from "../assets/calendar.png";
 import dayjs from "dayjs";
 
@@ -10,7 +11,8 @@ const Todo = ({ toggleDone, todo, setChange }) => {
     const [ edit, setEdit ] = useState(false)
     const [ text, setText ] = useState(todo.text)
     // console.log(todo.UserId)
-    const { authDetails } = useContext(AppContext) || {}
+    // const { authDetails } = useContext(AppContext) || {}
+    const authDetails = useTodoStore((state) => state.authDetails)
 
     const submit = (e) => {
         e.preventDefault()

@@ -2,15 +2,19 @@ import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import { apiGetPrevTodos, apiUpdateTodo, apiDeletePrevTodos } from "../api/todos";
+import useTodoStore from "../hooks/useTodoStore";
 import Todo from "../components/Todo";
 import Loading from "../components/Loading";
 import dayjs from "dayjs";
 
 const Completed = () => {
 
-  const { authDetails } = useContext(AppContext) || {}
+  // const { authDetails } = useContext(AppContext) || {}
+  const authDetails = useTodoStore((state) => state.authDetails)
+  const doneTodos = useTodoStore((state) => state.doneTodos)
+  const setDoneTodos = useTodoStore((state) => state.setDoneTodos)
 
-  const [ todos, setTodos ] = useState([])
+  // const [ done, setDone ] = useState([])
   const [ change, setChange ] = useState(0)
 
   const [ isLoading, setIsLoading ] = useState(false)
@@ -25,20 +29,26 @@ const Completed = () => {
     // } else {
     //   checkbox.setAttribute("disabled", true)
     // }
-
-    const edit = todos.find(todo => todo.id === id)      
+    
+    const edit = doneTodos.find(todo => todo.id === id)      
     const update = {
       ...edit,
       done: !done
     }      
-    const editIndex = todos.findIndex(todo => todo.id === id)
+    const editIndex = doneTodos.findIndex(todo => todo.id === id)
     
-    setTodos(prev => {      
+    // setDone(prev => {      
       
-      const temp = prev
-      temp[editIndex] = update
-      return [...temp]
-    })
+    //   const temp = prev
+    //   temp[editIndex] = update
+    //   return [...temp]
+    // })
+
+    const temp = doneTodos
+    temp[editIndex] = update
+    const todosUpdated = [...temp]
+
+    setDoneTodos(todosUpdated)
 
     const updateServer = async () => {
       await apiUpdateTodo(update.id, {
@@ -66,9 +76,9 @@ const Completed = () => {
       setIsLoading(true)
       apiGetPrevTodos(authDetails?.id, authDetails?.accessToken)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         if (response) {
-          setTodos(response.data)
+          setDoneTodos(response.data)
         }   
         setIsLoading(false)
       })
@@ -99,7 +109,7 @@ const Completed = () => {
     setIsLoading(false)
   }
 
-  const todoCards = todos.map((todo) => {
+  const todoCards = doneTodos.map((todo) => {
     
     return (
       
@@ -124,7 +134,7 @@ const Completed = () => {
       
       <div className="flex flex-col max-w-md items-stretch align-center sm:ml-10 md:ml-24">
         {todoCards}
-        {todos.length === 0 && !isLoading && <div className="">No todos</div>}
+        {doneTodos.length === 0 && !isLoading && <div className="">No todos</div>}
       </div>
 
       {isLoading && <div className="flex justify-center"><Loading /></div>}    

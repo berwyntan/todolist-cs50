@@ -4,10 +4,12 @@ import { apiRefresh } from "../api/user";
 import { AppContext } from "../App";
 import { useEffect, useContext, useState } from "react";
 import Loading from "../components/Loading";
+import useTodoStore from "../hooks/useTodoStore";
 
 const Layout = () => {
 
-  const { setAuthDetails } = useContext(AppContext) || {}
+  // const { setAuthDetails } = useContext(AppContext) || {}
+  const setAuthDetails = useTodoStore((state) => state.setAuthDetails)
   const navigate = useNavigate()
   const [ isLoading, setIsLoading ] = useState(false)
 
