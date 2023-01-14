@@ -1,17 +1,13 @@
 import './App.css'
-import { lazy } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Login from './pages/Login'
+import Signup from './pages/Signup'
 import Todolist from './pages/Todolist'
 import Layout from './pages/Layout'
-
-const Signup = lazy(() => import('./pages/Signup'))
-const Completed = lazy(() => import('./pages/Completed'))
-const NotFound = lazy(() => import('./pages/NotFound'))
-const Heatmap = lazy(() => import('./pages/Heatmap'))
-
-export const AppContext = createContext()
+import Completed from './pages/Completed'
+import NotFound from './pages/NotFound'
+import Heatmap from './pages/Heatmap'
 
 function App() {
   
