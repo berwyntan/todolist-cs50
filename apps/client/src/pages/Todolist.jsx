@@ -97,7 +97,7 @@ const Todolist = () => {
     
   }, [change])
 
-  console.log(todos)
+  
   const todoCards = todos.map((todo) => {
     
     return (
