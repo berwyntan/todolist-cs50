@@ -1,15 +1,13 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import HeatMap from '@uiw/react-heat-map'
 import dayjs from 'dayjs'
 import { apiGetHabitsOfTodo } from '../api/todos';
-import { AppContext } from "../App";
 import useTodoStore from "../hooks/useTodoStore";
 
 const Heatmap = () => {
 
   const { id } = useParams()
-  // const { authDetails } = useContext(AppContext) || {}
   const authDetails = useTodoStore((state) => state.authDetails)
 
   const [ value, setValue ] = useState([])
@@ -47,8 +45,7 @@ const Heatmap = () => {
   }, [])
   
   const firstColor = darkMode ? '#1e293b' : '#cbd5e1'
-  // console.log(dayjs(dayjs().subtract(1, 'year')).toDate())
-  // console.log(new Date())
+  
   return (
     <>
     <div className='flex flex-col items-center'>

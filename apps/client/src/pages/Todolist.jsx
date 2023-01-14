@@ -1,6 +1,5 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
-import { AppContext } from "../App";
+import { useState, useEffect } from "react";
 import { apiGetTodos, apiUpdateTodo } from "../api/todos";
 import useTodoStore from "../hooks/useTodoStore";
 import NewTodo from "../components/NewTodo";
@@ -10,12 +9,10 @@ import dayjs from "dayjs";
 
 const Todolist = () => {
 
-  // const { authDetails } = useContext(AppContext) || {}
   const authDetails = useTodoStore((state) => state.authDetails)
   const todos = useTodoStore((state) => state.todos)
   const setTodos = useTodoStore((state) => state.setTodos)
   
-  // const [ todos, setTodos ] = useState([])
   const [ change, setChange ] = useState(0)
 
   const [ isAdding, setIsAdding ] = useState(false)

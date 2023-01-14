@@ -3,15 +3,30 @@
 ### Video Demo
 
 ### About
-This is my final project for CS50x 2022. It is a todo list app, built with PERN stack. The idea for this app came from using Reminders app on iOS. It felt good to complete tasks and watch them disappear from your list, but it would be great to be able to reuse completed tasks so you didn't have to type it again. This also lets you practice atomic habits by making it easy to add back your habit to the list.
+This is my final project for CS50x 2022. It is a todo list app, built with PERN stack. The idea for this app came from using Reminders app on iOS. It felt good to complete tasks and watch them disappear from your list, but it would be great to be able to reuse completed tasks so you didn't have to type it again. This makes it easy to add back your habit to the list.
+The app includes a habit tracker in the form of a heatmap, like Github. 
+
+The idea for the app is built on James Clear's Atomic Habits:
+
+#### Make it obvious
+App loads straight to the todolist on refresh.
+#### Make it easy
+The text field for the entry of habits is relatively small, encouraging the user to keep it simple.
+You do not need to retype repeat todos, simply go to the Done list and uncheck it.
+#### Make it attractive
+You get to check your habit off and watch it disappear (to the completed list).
+#### Make it satisfying
+The heatmap gives a visual image of the times you did the todo per day, for a year.
 
 ### Frontend
-The frontend is built using React.
+Built with React.
 
 #### Libraries used
 - Axios
 - React Hook Form
 - React Router Dom
+- Zustand
+- DayJS
 - Tailwind CSS & DaisyUI
 
 #### Code features
@@ -33,7 +48,7 @@ When a task is completed, it can be checked off by clicking the checkbox. To cre
 
 Todos can be edited by clicking on the todo text. The HTML div containing the text has an onClick listener. Clicking will toggle the "edit" state and render an input text field in place of the original text. This input field has controlled inputs using React's useState. As with the adding of todos, the user presses enter to trigger the update of the todo to the database. The client side will then fetch the updated data. The updated todo will then be rendered, in the same sequence before the changes. This maintains a sense of consistency. If the text is unchanged and the user presses enter, no network call to the backend will be made. 
 
-If needed, user can logout by clicking the "Logout" button. This app does not use cookies or JWT to store information.
+If needed, user can logout by clicking the "Logout" button.
 
 ### Backend
 The backend is running on Node and Express. The API functions are modularized to model, controller, router. Passwords are hashed with Bcrypt so the database does not store the actual password.
@@ -44,7 +59,7 @@ The backend is running on Node and Express. The API functions are modularized to
 - Dotenv
 - Sequelize
 - Validator
-- JSONwebtoken
+- JSONWebToken
 
 #### Code features
 

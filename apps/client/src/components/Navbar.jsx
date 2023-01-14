@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "../App";
 import { apiLogout } from "../api/userProtected";
 import useTodoStore from "../hooks/useTodoStore";
 
 const Navbar = () => {
 
-  // const { authDetails, setAuthDetails } = useContext(AppContext) || {}
   const authDetails = useTodoStore((state) => state.authDetails)
   const setAuthDetails = useTodoStore((state) => state.setAuthDetails)
   const name = authDetails?.name

@@ -1,6 +1,5 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
-import { AppContext } from "../App";
+import { useState, useEffect } from "react";
 import { apiGetPrevTodos, apiUpdateTodo, apiDeletePrevTodos } from "../api/todos";
 import useTodoStore from "../hooks/useTodoStore";
 import Todo from "../components/Todo";
@@ -9,12 +8,10 @@ import dayjs from "dayjs";
 
 const Completed = () => {
 
-  // const { authDetails } = useContext(AppContext) || {}
   const authDetails = useTodoStore((state) => state.authDetails)
   const doneTodos = useTodoStore((state) => state.doneTodos)
   const setDoneTodos = useTodoStore((state) => state.setDoneTodos)
 
-  // const [ done, setDone ] = useState([])
   const [ change, setChange ] = useState(0)
 
   const [ isLoading, setIsLoading ] = useState(false)
@@ -37,13 +34,6 @@ const Completed = () => {
     }      
     const editIndex = doneTodos.findIndex(todo => todo.id === id)
     
-    // setDone(prev => {      
-      
-    //   const temp = prev
-    //   temp[editIndex] = update
-    //   return [...temp]
-    // })
-
     const temp = doneTodos
     temp[editIndex] = update
     const todosUpdated = [...temp]

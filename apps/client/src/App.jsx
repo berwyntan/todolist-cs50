@@ -1,29 +1,22 @@
 import './App.css'
-import { useState, createContext } from 'react'
+import { lazy } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Login from './pages/Login'
-import Signup from './pages/Signup'
 import Todolist from './pages/Todolist'
 import Layout from './pages/Layout'
-import Completed from './pages/Completed'
-import NotFound from './pages/NotFound'
-import Heatmap from './pages/Heatmap'
+
+const Signup = lazy(() => import('./pages/Signup'))
+const Completed = lazy(() => import('./pages/Completed'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+const Heatmap = lazy(() => import('./pages/Heatmap'))
 
 export const AppContext = createContext()
 
 function App() {
   
-  const [ authDetails, setAuthDetails ] = useState({})
-
-  const context = {
-    authDetails,
-    setAuthDetails
-  }
-
   return (
     <div className="App">
-      <AppContext.Provider value={context}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -36,7 +29,6 @@ function App() {
           </Route>          
         </Routes>
       </BrowserRouter>
-      </AppContext.Provider>
     </div>
   )
 }

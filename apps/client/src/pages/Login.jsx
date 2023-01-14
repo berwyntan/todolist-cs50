@@ -1,8 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { apiLogin } from "../api/user";
-import { AppContext } from "../App";
 import useTodoStore from "../hooks/useTodoStore";
 
 const Login = () => {
@@ -12,9 +11,6 @@ const Login = () => {
  
   const setAuthDetails = useTodoStore((state) => state.setAuthDetails)
   
-  // const { setAuthDetails } = useContext(AppContext) || {}
-   
-
   const navigate = useNavigate()
 
   const { register, handleSubmit, formState: { errors } } = useForm()
@@ -35,7 +31,6 @@ const Login = () => {
     })
     
   }
-
 
   return (
     <>
