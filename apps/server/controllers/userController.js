@@ -101,9 +101,14 @@ const refresh = async (req, res) => {
     const refreshToken = cookies.jwt;
     // console.log(refreshToken);
 
-    const foundUser = await User.findOne({where: { refreshToken: refreshToken }});
-    if (!foundUser) await User.findOne({where: { refreshToken1: refreshToken }});
-    if (!foundUser) await User.findOne({where: { refreshToken2: refreshToken }});
+    let foundUser = null;
+    foundUser = await User.findOne({where: { refreshToken: refreshToken }});
+    if (!foundUser) {
+        foundUser = await User.findOne({where: { refreshToken1: refreshToken }});
+    }
+    if (!foundUser) {
+        foundUser = await User.findOne({where: { refreshToken2: refreshToken }});
+    }
     if (!foundUser) return res.status(403).json({ message: "User not found"});
     // evaluate jwt 
     jwt.verify(
