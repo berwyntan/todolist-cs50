@@ -7,6 +7,8 @@ const logout = async (req, res) => {
 
     // Is refreshToken in db?
     const foundUser = await User.findOne({where: { refreshToken: refreshToken }});
+    if (!foundUser) await User.findOne({where: { refreshToken1: refreshToken }});
+    if (!foundUser) await User.findOne({where: { refreshToken2: refreshToken }});
     if (!foundUser) {
         res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
         return res.sendStatus(204);

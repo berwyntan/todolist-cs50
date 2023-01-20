@@ -23,6 +23,12 @@ const User = db.define('User', {
     refreshToken: {
       type: DataTypes.STRING,
     },
+    refreshToken1: {
+      type: DataTypes.STRING,
+    },
+    refreshToken2: {
+      type: DataTypes.STRING,
+    },
 });
 
 User.sync({alter: true});

@@ -71,7 +71,7 @@ Validator checks the user inputs from the API calls, such as whether the passwor
 Authentication is done with JWTs, where the client receives an access token. The access token is used for API calls to protected routes on the backend. On the access token is the user's unique id. If the id in request parameters and the id on the access token are not the same, the API call returns an error 403.
 
 ##### Persistent login
-Client side receives a refresh token in a HTTP only cookie on logging in. The refresh token lasts for 2 days. When the app loads, the client will send an API call with the refresh token via useEffect. The refresh token is verified and if the user email and the token exists on the database, a new access token is issued and the user is logged in automatically.
+Client side receives a refresh token in a HTTP only cookie on logging in. The refresh token lasts for 2 days. When the app loads, the client will send an API call with the refresh token via useEffect. The refresh token is verified and if the user email and the token exists on the database, a new access token is issued and the user is logged in automatically. DB stores up to 3 refresh tokens to allow usage of the app across multiple devices.
 
 ##### Database
 

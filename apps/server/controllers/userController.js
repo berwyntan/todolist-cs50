@@ -69,6 +69,11 @@ const login = async (req, res) => {
                 { expiresIn: '2d' }
             );
 
+            // cascading prev refreshTokens
+            const refreshToken1 = foundUser.refreshToken
+            const refreshToken2 = foundUser.refreshToken1
+            foundUser.refreshToken2 = refreshToken2
+            foundUser.refreshToken1 = refreshToken1
             // Saving refreshToken with founduser
             foundUser.refreshToken = refreshToken;
             await foundUser.save();
@@ -96,7 +101,9 @@ const refresh = async (req, res) => {
     const refreshToken = cookies.jwt;
     // console.log(refreshToken);
 
-    const foundUser = await User.findOne({where: { refreshToken }});
+    const foundUser = await User.findOne({where: { refreshToken: refreshToken }});
+    if (!foundUser) await User.findOne({where: { refreshToken1: refreshToken }});
+    if (!foundUser) await User.findOne({where: { refreshToken2: refreshToken }});
     if (!foundUser) return res.status(403).json({ message: "User not found"});
     // evaluate jwt 
     jwt.verify(
