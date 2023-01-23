@@ -6,7 +6,8 @@ const logout = async (req, res) => {
     const refreshToken = cookies.jwt;
 
     // Is refreshToken in db?
-    const foundUser = await User.findOne({where: { refreshToken: refreshToken }});
+    let foundUser = null;
+    foundUser = await User.findOne({where: { refreshToken: refreshToken }});
     if (!foundUser) await User.findOne({where: { refreshToken1: refreshToken }});
     if (!foundUser) await User.findOne({where: { refreshToken2: refreshToken }});
     if (!foundUser) {

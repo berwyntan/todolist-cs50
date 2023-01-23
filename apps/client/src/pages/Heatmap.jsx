@@ -3,12 +3,16 @@ import { useParams } from 'react-router-dom';
 import HeatMap from '@uiw/react-heat-map'
 import dayjs from 'dayjs'
 import { apiGetHabitsOfTodo } from '../api/todos';
+import { apiRefresh } from '../api/user';
 import useTodoStore from "../hooks/useTodoStore";
+import useVisibleTab from '../hooks/useVisibleTab';
 
 const Heatmap = () => {
 
   const { id } = useParams()
   const authDetails = useTodoStore((state) => state.authDetails)
+  const setAuthDetails = useTodoStore((state) => state.setAuthDetails)
+  const visible = useVisibleTab()
 
   const [ value, setValue ] = useState([])
   const [ title, setTitle ] = useState("")
@@ -43,6 +47,19 @@ const Heatmap = () => {
 
     getHabit()
   }, [])
+
+  useEffect(() => {
+    apiRefresh()
+    .then((response) => {
+      if (response?.data?.accessToken) {
+        setAuthDetails(response?.data)
+      }
+      else {
+        navigate('/login')
+      }
+    })
+    
+  }, [visible])
   
   const firstColor = darkMode ? '#1e293b' : '#cbd5e1'
   

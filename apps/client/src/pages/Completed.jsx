@@ -1,7 +1,9 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { apiGetPrevTodos, apiUpdateTodo, apiDeletePrevTodos } from "../api/todos";
+import { apiRefresh } from "../api/user";
 import useTodoStore from "../hooks/useTodoStore";
+import useVisibleTab from "../hooks/useVisibleTab";
 import Todo from "../components/Todo";
 import Loading from "../components/Loading";
 import dayjs from "dayjs";
@@ -9,8 +11,10 @@ import dayjs from "dayjs";
 const Completed = () => {
 
   const authDetails = useTodoStore((state) => state.authDetails)
+  const setAuthDetails = useTodoStore((state) => state.setAuthDetails)
   const doneTodos = useTodoStore((state) => state.doneTodos)
   const setDoneTodos = useTodoStore((state) => state.setDoneTodos)
+  const visible = useVisibleTab()
 
   const [ change, setChange ] = useState(0)
 
@@ -98,6 +102,19 @@ const Completed = () => {
     })
     setIsLoading(false)
   }
+
+  useEffect(() => {
+    apiRefresh()
+    .then((response) => {
+      if (response?.data?.accessToken) {
+        setAuthDetails(response?.data)
+      }
+      else {
+        navigate('/login')
+      }
+    })
+    
+  }, [visible])
 
   const todoCards = doneTodos.map((todo) => {
     

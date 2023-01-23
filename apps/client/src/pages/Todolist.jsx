@@ -1,7 +1,9 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { apiGetTodos, apiUpdateTodo } from "../api/todos";
+import { apiRefresh } from "../api/user";
 import useTodoStore from "../hooks/useTodoStore";
+import useVisibleTab from "../hooks/useVisibleTab";
 import NewTodo from "../components/NewTodo";
 import Todo from "../components/Todo";
 import Loading from "../components/Loading";
@@ -10,14 +12,16 @@ import dayjs from "dayjs";
 const Todolist = () => {
 
   const authDetails = useTodoStore((state) => state.authDetails)
+  const setAuthDetails = useTodoStore((state) => state.setAuthDetails)
   const todos = useTodoStore((state) => state.todos)
   const setTodos = useTodoStore((state) => state.setTodos)
+  const visible = useVisibleTab()
   
   const [ change, setChange ] = useState(0)
 
   const [ isAdding, setIsAdding ] = useState(false)
-  const [ isLoading, setIsLoading ] = useState(false)  
-
+  const [ isLoading, setIsLoading ] = useState(false) 
+  
   const navigate = useNavigate()
 
   const toggleDone = async (id, done) => {
@@ -93,6 +97,20 @@ const Todolist = () => {
     return () => clearTimeout(delay)
     
   }, [change])
+
+  
+  useEffect(() => {
+    apiRefresh()
+    .then((response) => {
+      if (response?.data?.accessToken) {
+        setAuthDetails(response?.data)
+      }
+      else {
+        navigate('/login')
+      }
+    })
+    
+  }, [visible])
 
   
   const todoCards = todos.map((todo) => {
