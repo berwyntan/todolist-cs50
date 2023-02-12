@@ -6,6 +6,7 @@ import { apiGetHabitsOfTodo } from '../api/todos';
 import { apiRefresh } from '../api/user';
 import useTodoStore from "../hooks/useTodoStore";
 import useVisibleTab from '../hooks/useVisibleTab';
+import Loading from "../components/Loading";
 
 const Heatmap = () => {
 
@@ -18,10 +19,12 @@ const Heatmap = () => {
   const [ title, setTitle ] = useState("")
   const [ info, setInfo ] = useState({})
   const [ darkMode, setDarkMode ] = useState(false)
+  const [ isLoading, setIsLoading ] = useState(false)
 
   const handleMouseover = (data) => {
     setInfo({date: data.date, count: data.count})
   }
+
   useEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       // dark mode
@@ -29,8 +32,10 @@ const Heatmap = () => {
     }
 
     const getHabit = async () => {
+      setIsLoading(true)
       const response = await apiGetHabitsOfTodo(id, authDetails.accessToken)
       // console.log(response.data)
+      
       setTitle(response.data.todo.text)
       if (response.data.result.length > 0) {
         const habits = response.data.result.map(habit => {
@@ -42,7 +47,7 @@ const Heatmap = () => {
         // console.log(habits)
         setValue(habits)
       }
-      
+      setIsLoading(false)
     }
 
     getHabit()
@@ -90,6 +95,7 @@ const Heatmap = () => {
         }}
         />
     </div>
+    {isLoading && <div className="flex justify-center"><Loading /></div>}
     <div className='visible md:invisible'>
       Heatmap is best viewed in landscape mode
     </div>
@@ -99,6 +105,7 @@ const Heatmap = () => {
     <div className='invisible md:visible'>
       Count: {info.count ?? 0}
     </div>
+        
     </div>
     </>
   )

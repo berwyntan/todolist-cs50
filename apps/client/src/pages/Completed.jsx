@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { apiGetPrevTodos, apiUpdateTodo, apiDeletePrevTodos } from "../api/todos";
 import { apiRefresh } from "../api/user";
 import useTodoStore from "../hooks/useTodoStore";
@@ -22,7 +22,7 @@ const Completed = () => {
 
   const navigate = useNavigate()
 
-  const toggleDone = async (id, done) => {
+  const toggleDone = useCallback(async (id, done) => {
     // disable checkbox on click
     // const checkbox = document.getElementById(id)
     // if (done) {
@@ -62,7 +62,7 @@ const Completed = () => {
     } catch (error) {
       navigate("/")
     }  
-  }
+  }, [doneTodos])
   
   useEffect(() => {
 
@@ -88,7 +88,7 @@ const Completed = () => {
     
   }, [change])
 
-  const deletePrevTodos = (id, setIsLoading) => {
+  const deletePrevTodos = useCallback((id, setIsLoading) => {
     setIsLoading(true)
     apiDeletePrevTodos(id, authDetails?.accessToken)
     .then((response) => {
@@ -101,7 +101,7 @@ const Completed = () => {
       console.log(error)
     })
     setIsLoading(false)
-  }
+  }, [])
 
   useEffect(() => {
     apiRefresh()

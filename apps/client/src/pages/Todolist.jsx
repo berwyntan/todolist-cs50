@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { apiGetTodos, apiUpdateTodo } from "../api/todos";
 import { apiRefresh } from "../api/user";
 import useTodoStore from "../hooks/useTodoStore";
@@ -24,7 +24,7 @@ const Todolist = () => {
   
   const navigate = useNavigate()
 
-  const toggleDone = async (id, done) => {
+  const toggleDone = useCallback(async (id, done) => {
     // disable checkbox on click
     // const checkbox = document.getElementById(id)
     // if (done) {
@@ -73,7 +73,7 @@ const Todolist = () => {
     } catch (error) {
       navigate("/")
     }  
-  }
+  }, [todos])
 
   useEffect(() => {
 
@@ -92,7 +92,7 @@ const Todolist = () => {
       })
     }
 
-    const delay = setTimeout(getAllTodos, 50)
+    const delay = setTimeout(getAllTodos, 0)
     
     return () => clearTimeout(delay)
     
